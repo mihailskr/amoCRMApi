@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сделки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #339dc8;
+            color: #000000;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h2 {
+            background-color: #339dc8;
+            color: #fff;
+            padding: 10px;
+            margin: 0;
+        }
+
+        #content {
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 800px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #339dc8;
+            color: #fff;
+        }
+
+        a {
+            color: #339dc8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<h2>Сделки</h2>
+<div id="content">
+    {% if leads %}
+        <table>
+            <tr>
+                <th>Название</th>
+                <th>Бюджет сделки</th>
+                <th>Статус</th>
+                <th>Ответственный</th>
+                <th>Id сделки</th>
+                <th>Id аккаунта</th>
+            </tr>
+            {% for lead in leads|slice((pageNumber - 1) * pageSize, pageSize) %}
+                <tr>
+                    <td><a href="{{ lead.leadLink }}">{{ lead.name }}</a></td>
+                    <td>{{ lead.budget }}</td>
+                    <td>{{ lead.status }}</td>
+                    <td>{{ lead.responsible }}</td>
+                    <td>{{ lead.leadId }}</td>
+                    <td>{{ lead.accountId }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Не найдено ни одной сделки.</p>
+    {% endif %}
+</div>
+</body>
+</html>
+

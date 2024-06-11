@@ -1,0 +1,2 @@
+# min hour day month weekday command
+ 0    2    *   *     *       cd /your/absolute/path/to/repo/integration-sceleton-test && /usr/bin/php bin/console integration:token:update

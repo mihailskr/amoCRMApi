@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сервис аналитики сделок</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #339dc8;
+            height: 50vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .header {
+            background-color: #339dc8;
+            color: #ffffff;
+            padding: 10px;
+        }
+
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #02709b;
+            color: #ffffff;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Сервис аналитики сделок</h1>
+        <p>Авторизация прошла успешно</p>
+    </div>
+
+    <p>Аккаунт ID: {{ accountId }}</p>
+
+    <!-- Кнопки для переходов -->
+    <a class="button" href="/leads?accountId={{ accountId }}">Перейти к сделкам</a>
+    <a class="button" href="/leads/sum?accountId={{ accountId }}">Бюджет по сделкам</a>
+</div>
+</body>
+</html>
+

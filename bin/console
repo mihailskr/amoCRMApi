@@ -1,0 +1,23 @@
+<?php
+
+use Symfony\Component\Console\Application;
+use Integration\Command\UpdateTokensCommand;
+use Integration\Command\RunLeadsWorkerCommand;
+
+require __DIR__.'/../vendor/autoload.php';
+
+$container = require 'config/container.php';
+
+$application = new Application();
+
+$commands = [
+    new UpdateTokensCommand(),
+    new RunLeadsWorkerCommand(),
+];
+
+foreach ($commands as $command) {
+    $command->setContainer($container);
+    $application->add($command);
+}
+
+$application->run();

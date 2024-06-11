@@ -1,0 +1,81 @@
+version: "3.5"
+
+x-php-tmpl:
+  &php-tmpl
+  build:
+    context: .
+    dockerfile: ./docker/Dockerfile
+  working_dir: /var/www/integration
+  env_file:
+    - ./.env
+
+services:
+  integration_php_backend:
+    <<: *php-tmpl
+    container_name: integration_php_backend
+    restart: always
+    tty: true
+    volumes:
+      - .:/var/www/integration
+    networks:
+      - integration_network
+
+  integration_php_workers:
+    <<: *php-tmpl
+    container_name: integration_php_workers
+    command: "php bin/console worker:leads.hook_queue"
+    tty: true
+    volumes:
+      - .:/var/www/integration
+    networks:
+      - integration_network
+
+  integration_nginx:
+    container_name: integration_nginx
+    image: nginx:alpine
+    restart: always
+    tty: true
+    env_file:
+      - ./.env
+    ports:
+      - "8080:80"
+      - "443:443"
+    volumes:
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./public/:/var/www/integration/public/
+    networks:
+      - integration_network
+
+  integration_beanstalk:
+    container_name: integration_beanstalk
+    image: schickling/beanstalkd
+    restart: always
+    ports:
+      - "11300:11300"
+    networks:
+      - integration_network
+
+  integration_memcached:
+    container_name: integration_memcached
+    image: library/memcached:1.6-alpine
+    restart: always
+    ports:
+      - "11212:11211"
+    networks:
+      - integration_network
+
+  integration_mysql:
+    image: mysql:8
+    container_name: integration_mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: amocrm_integration
+      MYSQL_ROOT_PASSWORD: 111111
+    networks:
+      - integration_network
+
+networks:
+  integration_network:
+    driver: bridge
